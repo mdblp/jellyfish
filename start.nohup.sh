@@ -3,11 +3,11 @@
 . "${NVM_DIR}/nvm.sh"
 . version.sh
 
-service=jellyfish
+service=${1:-'jellyfish'}
 
 nvm ls "${START_NODE_VERSION}" > /dev/null || { echo "ERROR: Node version ${START_NODE_VERSION} not installed"; exit 1; }
 nvm use --delete-prefix "${START_NODE_VERSION}"
 
 . config/env.sh
 
-forever -a -o ../$service.log -e ../$service.error.log --uid $service start app.js
+nohup node app.js > ../$service.log 2> ../$service.error.log <&- &
